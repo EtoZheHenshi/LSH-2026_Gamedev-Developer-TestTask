@@ -5,8 +5,8 @@ namespace Code.Core.Update
 {
     public sealed class UpdateManager : IService
     {
-        private readonly List<ITickable> _tickables = new();
-        private readonly List<IFixedTickable> _fixedTickables = new();
+        private readonly List<ITickable> _tickables = new(8);
+        private readonly List<IFixedTickable> _fixedTickables = new(8);
 
         public void Register(ITickable tickable)
         {
@@ -22,7 +22,7 @@ namespace Code.Core.Update
         {
             for (int i = 0; i < _tickables.Count; i++)
             {
-                _tickables[i].Tick(deltaTime);
+                _tickables[i]?.Tick(deltaTime);
             }
         }
 
@@ -30,7 +30,7 @@ namespace Code.Core.Update
         {
             for (int i = 0; i < _fixedTickables.Count; i++)
             {
-                _fixedTickables[i].FixedTick(fixedDeltaTime);
+                _fixedTickables[i]?.FixedTick(fixedDeltaTime);
             }
         }
     }

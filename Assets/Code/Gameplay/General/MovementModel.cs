@@ -4,7 +4,7 @@ namespace Code.Gameplay.General
 {
     public sealed class MovementModel
     {
-        private Vector2 _velocity;
+        private Rigidbody2D _rb;
         private readonly float _speed;
         private readonly float _accel;
         private readonly float _fallSpeed;
@@ -12,10 +12,10 @@ namespace Code.Gameplay.General
         private readonly GroundedCheckModel _groundedCheckModel;
         private readonly float _gravity = 10f;
 
-        public MovementModel(Vector2 velocity, float speed, float fallSpeed, GroundedCheckModel groundedCheckModel, 
+        public MovementModel(Rigidbody2D rigidbody, float speed, float fallSpeed, GroundedCheckModel groundedCheckModel, 
             bool isSpeedPermanent = true, float accel = 0f)
         {
-            _velocity = velocity;
+            _rb = rigidbody;
             _speed = speed;
             _fallSpeed = fallSpeed;
             _groundedCheckModel = groundedCheckModel;
@@ -32,11 +32,15 @@ namespace Code.Gameplay.General
         {
             if (_isSpeedPermanent)
             {
-                _velocity.x = direction * _speed * deltaTime;
+                _rb.MovePosition(new Vector2(_rb.position.x + direction * _speed * deltaTime, _rb.position.y));
             }
             else
             {
-                _velocity.x = Mathf.MoveTowards(_velocity.x, direction * _speed, _accel * deltaTime);
+                _rb.MovePosition(new Vector2(
+                    Mathf.MoveTowards(_rb.position.x, direction * _speed, _accel * deltaTime),
+                    _rb.position.y
+                    )
+                );
             }
         }
 
@@ -44,14 +48,14 @@ namespace Code.Gameplay.General
         {
             if (!_groundedCheckModel.IsGrounded)
             {
-                float fallSpeed = _velocity.y - _gravity * deltaTime;
+                float fallSpeed = _rb.position.y - _gravity * deltaTime;
                 if (fallSpeed < _fallSpeed)
                 {
-                    _velocity.y = fallSpeed;
+                    _rb.MovePosition(new Vector2(_rb.position.x, fallSpeed));
                 }
                 else
                 {
-                    _velocity.y = _fallSpeed;
+                    _rb.MovePosition(new Vector2(_rb.position.x, _fallSpeed));
                 }
             }
         }

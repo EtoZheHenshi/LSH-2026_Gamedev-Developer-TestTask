@@ -10,9 +10,11 @@ namespace Code.Gameplay.Character
     public sealed class CharacterController : ITickable, IFixedTickable
     {
         private readonly CharacterView _characterView;
-        private GroundedCheckView _groundedCheckView;
-        private GroundedCheckModel _groundedCheckModel;
-        private MovementModel _movementModel;
+        private readonly GroundedCheckView _groundedCheckView;
+        
+        private readonly GroundedCheckModel _groundedCheckModel;
+        private readonly MovementModel _movementModel;
+        private readonly JumpModel _jumpModel;
 
         private float _direction;
 
@@ -26,7 +28,7 @@ namespace Code.Gameplay.Character
                 _groundedCheckView.Radius,  
                 _groundedCheckView.GroundLayers,
                 _groundedCheckView.transform
-                );
+            );
 
             _movementModel = new MovementModel(
                 _characterView.Rigidbody,
@@ -37,6 +39,13 @@ namespace Code.Gameplay.Character
                 _characterView.Config.Accel
             );
 
+            _jumpModel = new JumpModel(
+                _characterView.Rigidbody,
+                _groundedCheckModel,
+                _characterView.Config.JumpForce,
+                _characterView.Config.MaxJumps
+            );
+
             updateManager.Register((ITickable)this);
             updateManager.Register((IFixedTickable)this);
             SetInputActions(inputService);
@@ -45,6 +54,7 @@ namespace Code.Gameplay.Character
         public void Tick(float deltaTime)
         {
             _groundedCheckModel.Tick();
+            _jumpModel.Tick();
         }
 
         public void FixedTick(float fixedDeltaTime)
@@ -57,13 +67,19 @@ namespace Code.Gameplay.Character
         {
             inputService.PlayerInput.Gameplay.Move.performed += InputMoveAction;
             inputService.PlayerInput.Gameplay.Move.canceled += InputMoveAction;
+
+            inputService.PlayerInput.Gameplay.Jump.started += InputJumpAction;
         }
         
         
         private void InputMoveAction(InputAction.CallbackContext ctx)
         {
             _direction = ctx.ReadValue<float>();
-            Debug.Log(ctx.ReadValue<float>());
+        }
+        
+        private void InputJumpAction(InputAction.CallbackContext ctx)
+        {
+            _jumpModel.Jump();
         }
     }
 }

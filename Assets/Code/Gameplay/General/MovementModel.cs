@@ -43,9 +43,10 @@ namespace Code.Gameplay.General
 
         private void Gravity(float deltaTime)
         {
-            if (!_groundedCheckModel.IsGrounded)
+            float gravity = _gravity * _gravityModifier;
+            if (!_groundedCheckModel.IsGrounded && _rb.linearVelocityY > gravity)
             {
-                _rb.linearVelocityY = _gravity * _gravityModifier;
+                _rb.linearVelocityY += gravity * deltaTime;
             }
         }
     }

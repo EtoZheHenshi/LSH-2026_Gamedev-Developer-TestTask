@@ -53,7 +53,7 @@ namespace Code.Gameplay.Character
 
         public void Tick(float deltaTime)
         {
-            _groundedCheckModel.Tick();
+            //_groundedCheckModel.Tick();
             _jumpModel.Tick();
         }
 

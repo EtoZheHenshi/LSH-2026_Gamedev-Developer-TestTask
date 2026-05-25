@@ -1,4 +1,3 @@
-using Code.Core.Update;
 using UnityEngine;
 
 namespace Code.Gameplay.General
@@ -16,6 +15,10 @@ namespace Code.Gameplay.General
             _radius = radius;
             _checkLayers = checkLayers;
             _checkTransform = checkTransform;
+        }
+
+        public CircleLayerCheckModel(CircleLayerCheckView view) : this(view.Radius, view.CheckLayers, view.transform)
+        {
         }
 
         public void Tick()

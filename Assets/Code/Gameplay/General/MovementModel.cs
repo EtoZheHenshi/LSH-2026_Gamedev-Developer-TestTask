@@ -25,6 +25,7 @@ namespace Code.Gameplay.General
 
         public void Tick(float deltaTime)
         {
+            _groundedCheckModel.Tick();
             Gravity(deltaTime);
         }
 

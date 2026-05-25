@@ -31,7 +31,7 @@ namespace Code.Gameplay.Character
             _movementModel = new MovementModel(
                 _characterView.Rigidbody,
                 _characterView.Config.Speed,
-                _characterView.Config.FallSpeed,
+                _characterView.Config.GravityModifier,
                 _groundedCheckModel,
                 true,
                 _characterView.Config.Accel
@@ -63,6 +63,7 @@ namespace Code.Gameplay.Character
         private void InputMoveAction(InputAction.CallbackContext ctx)
         {
             _direction = ctx.ReadValue<float>();
+            Debug.Log(ctx.ReadValue<float>());
         }
     }
 }

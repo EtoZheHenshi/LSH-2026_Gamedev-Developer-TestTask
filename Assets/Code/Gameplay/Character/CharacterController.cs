@@ -35,7 +35,7 @@ namespace Code.Gameplay.Character
                 _characterView.Config.Speed,
                 _characterView.Config.GravityModifier,
                 _groundedCheckModel,
-                true,
+                false,
                 _characterView.Config.Accel
             );
 

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39059ec46658491bb80726cfd0f848a1, type: 3}
   m_Name: CharacterConfig
   m_EditorClassIdentifier: Assembly-CSharp::Code.Gameplay.Character.CharacterConfig
-  _speed: 4
-  _fallSpeed: 10
-  _accel: 2
+  _speed: 7
+  _gravityModifier: 1
+  _accel: 0.1
+  _jumpForce: 3
+  _maxJumps: 2

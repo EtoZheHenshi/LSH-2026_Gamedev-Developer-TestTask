@@ -10,23 +10,23 @@ namespace Code.Gameplay.Character
     public sealed class CharacterController : ITickable, IFixedTickable
     {
         private readonly CharacterView _characterView;
-        private readonly GroundedCheckView _groundedCheckView;
+        private readonly CircleLayerCheckView _groundedCheckView;
         
-        private readonly GroundedCheckModel _groundedCheckModel;
+        private readonly CircleLayerCheckModel _groundedCheckModel;
         private readonly MovementModel _movementModel;
         private readonly JumpModel _jumpModel;
 
         private float _direction;
 
-        public CharacterController(CharacterView characterView, GroundedCheckView groundedCheckView, 
+        public CharacterController(CharacterView characterView, CircleLayerCheckView groundedCheckView, 
             UpdateManager updateManager, InputService inputService)
         {
             _characterView = characterView;
             _groundedCheckView = groundedCheckView;
             
-            _groundedCheckModel = new GroundedCheckModel(
+            _groundedCheckModel = new CircleLayerCheckModel(
                 _groundedCheckView.Radius,  
-                _groundedCheckView.GroundLayers,
+                _groundedCheckView.CheckLayers,
                 _groundedCheckView.transform
             );
 

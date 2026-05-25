@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace Code.Gameplay.General
 {
-    public sealed class GroundedCheckView : MonoBehaviour
+    public sealed class CircleLayerCheckView : MonoBehaviour
     {
         [SerializeField] private float _radius = 0.1f;
-        [SerializeField] private LayerMask _groundLayers;
+        [SerializeField] private LayerMask _checkLayers;
         
         public float Radius => _radius;
-        public LayerMask GroundLayers => _groundLayers;
+        public LayerMask CheckLayers => _checkLayers;
 
         private void OnDrawGizmos()
         {

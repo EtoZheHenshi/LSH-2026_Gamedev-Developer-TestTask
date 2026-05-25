@@ -9,10 +9,10 @@ namespace Code.Gameplay.General
         private readonly float _accel;
         private readonly float _gravityModifier;
         private readonly bool _isSpeedPermanent;
-        private readonly GroundedCheckModel _groundedCheckModel;
+        private readonly CircleLayerCheckModel _groundedCheckModel;
         private readonly float _gravity = -5f;
 
-        public MovementModel(Rigidbody2D rigidbody, float speed, float gravityModifier, GroundedCheckModel groundedCheckModel, 
+        public MovementModel(Rigidbody2D rigidbody, float speed, float gravityModifier, CircleLayerCheckModel groundedCheckModel, 
             bool isSpeedPermanent = true, float accel = 0f)
         {
             _rb = rigidbody;
@@ -44,7 +44,7 @@ namespace Code.Gameplay.General
         private void Gravity(float deltaTime)
         {
             float gravity = _gravity * _gravityModifier;
-            if (!_groundedCheckModel.IsGrounded && _rb.linearVelocityY > gravity)
+            if (!_groundedCheckModel.IsCheckTrue && _rb.linearVelocityY > gravity)
             {
                 _rb.linearVelocityY += gravity * deltaTime;
             }

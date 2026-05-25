@@ -5,7 +5,7 @@ namespace Code.Gameplay.General
     public sealed class JumpModel
     {
         private readonly Rigidbody2D _rb;
-        private readonly GroundedCheckModel _groundedCheckModel;
+        private readonly CircleLayerCheckModel _groundedCheckModel;
         private readonly float _jumpForce;
         private readonly int _maxJumps;
         
@@ -13,7 +13,7 @@ namespace Code.Gameplay.General
         private int _jumpCount;
         private bool _isJumping;
 
-        public JumpModel(Rigidbody2D rb, GroundedCheckModel groundedCheckModel, float jumpForce,  int maxJumps = 1)
+        public JumpModel(Rigidbody2D rb, CircleLayerCheckModel groundedCheckModel, float jumpForce,  int maxJumps = 1)
         {
             _rb = rb;
             _groundedCheckModel = groundedCheckModel;
@@ -23,12 +23,12 @@ namespace Code.Gameplay.General
 
         public void Tick()
         {
-            if (!_groundedCheckModel.IsGrounded)
+            if (!_groundedCheckModel.IsCheckTrue)
             {
                 _isJumping = true;
             }
             
-            if (_isJumping && _groundedCheckModel.IsGrounded)
+            if (_isJumping && _groundedCheckModel.IsCheckTrue)
             {
                 _rb.linearVelocityY = 0f;
                 _isJumping = false;

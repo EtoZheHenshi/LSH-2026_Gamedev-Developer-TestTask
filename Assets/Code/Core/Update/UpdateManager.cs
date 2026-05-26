@@ -17,6 +17,16 @@ namespace Code.Core.Update
         {
             _fixedTickables.Add(fixedTickable);
         }
+        
+        public void Remove(ITickable tickable)
+        {
+            _tickables.Remove(tickable);
+        }
+
+        public void Remove(IFixedTickable fixedTickable)
+        {
+            _fixedTickables.Remove(fixedTickable);
+        }
 
         public void Tick(float deltaTime)
         {

@@ -17,3 +17,4 @@ MonoBehaviour:
   _accel: 0.1
   _jumpForce: 3
   _maxJumps: 2
+  _stompJumpForce: 2

@@ -9,43 +9,43 @@ namespace Code.Gameplay.Character
 {
     public sealed class CharacterController : ITickable, IFixedTickable
     {
-        private readonly CharacterView _characterView;
-        private readonly CircleLayerCheckView _groundedCheckView;
-        
-        private readonly CircleLayerCheckModel _groundedCheckModel;
         private readonly MovementModel _movementModel;
         private readonly JumpModel _jumpModel;
+        private readonly CharacterStompModel _stompModel;
 
         private float _direction;
 
-        public CharacterController(CharacterView characterView, CircleLayerCheckView groundedCheckView, 
+        public CharacterController(CharacterView characterView, CircleLayerCheckView groundedCheckView,
             UpdateManager updateManager, InputService inputService)
         {
-            _characterView = characterView;
-            _groundedCheckView = groundedCheckView;
-            
-            _groundedCheckModel = new CircleLayerCheckModel(
-                _groundedCheckView.Radius,  
-                _groundedCheckView.CheckLayers,
-                _groundedCheckView.transform
+            //Initialization
+            CircleLayerCheckModel groundedCheckModel = new CircleLayerCheckModel(
+                groundedCheckView.Radius,  
+                groundedCheckView.CheckLayers,
+                groundedCheckView.transform
             );
 
             _movementModel = new MovementModel(
-                _characterView.Rigidbody,
-                _characterView.Config.Speed,
-                _characterView.Config.GravityModifier,
-                _groundedCheckModel,
+                characterView.Rigidbody,
+                characterView.Config.Speed,
+                characterView.Config.GravityModifier,
+                groundedCheckModel,
                 false,
-                _characterView.Config.Accel
+                characterView.Config.Accel
             );
 
             _jumpModel = new JumpModel(
-                _characterView.Rigidbody,
-                _groundedCheckModel,
-                _characterView.Config.JumpForce,
-                _characterView.Config.MaxJumps
+                characterView.Rigidbody,
+                groundedCheckModel,
+                characterView.Config.JumpForce,
+                characterView.Config.MaxJumps
             );
 
+            _stompModel = new CharacterStompModel(characterView.Rigidbody, characterView.Config.StompJumpForce);
+
+            //Subscribing
+            characterView.OnStomp += _stompModel.Stomp;
+            
             updateManager.Register((ITickable)this);
             updateManager.Register((IFixedTickable)this);
             SetInputActions(inputService);

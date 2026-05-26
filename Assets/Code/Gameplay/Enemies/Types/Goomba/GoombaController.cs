@@ -6,10 +6,12 @@ namespace Code.Gameplay.Enemies.Types.Goomba
 {
     public sealed class GoombaController : ITickable, IFixedTickable
     {
-        private PatrolMovementModel _movementModel;
+        private readonly PatrolMovementModel _movementModel;
+        private readonly DeathModel _deathModel;
 
         public GoombaController(GoombaView view, UpdateManager updateManager)
         {
+            //Initialization
             GoombaConfig config = view.Config;
             
             _movementModel = new PatrolMovementModel(
@@ -18,11 +20,35 @@ namespace Code.Gameplay.Enemies.Types.Goomba
                 config.GravityModifier,
                 new CircleLayerCheckModel(view.GroundLayerCheck)
             );
-
-            view.OnCollisionEnterEvent += _movementModel.SwitchDirection;
             
-            updateManager.Register((ITickable)this);
-            updateManager.Register((IFixedTickable)this);
+            _deathModel = new DeathModel();
+
+            //Subscribing
+            Sub();
+            
+            _deathModel.OnDie += UnSub;
+            
+            return;
+
+            void Sub()
+            {
+                view.OnCollisionEnterEvent += _movementModel.SwitchDirection;
+                view.OnStomp += _deathModel.Die;
+            
+                updateManager.Register((ITickable)this);
+                updateManager.Register((IFixedTickable)this);
+            }
+
+            void UnSub()
+            {
+                updateManager.Remove((ITickable)this);
+                updateManager.Remove((IFixedTickable)this);
+                
+                view.OnStomp -= _deathModel.Die;
+                view.OnCollisionEnterEvent -= _movementModel.SwitchDirection;
+                
+                view.Destroy();
+            }
         }
 
         public void Tick(float deltaTime)

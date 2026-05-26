@@ -16,10 +16,10 @@ namespace Code.Gameplay.Enemies.Types.Goomba
                 view.Rigidbody,
                 config.Speed,
                 config.GravityModifier,
-                new CircleLayerCheckModel(view.GroundLayerCheck),
-                new CircleLayerCheckModel(view.LeftWallLayerCheck),
-                new CircleLayerCheckModel(view.RightWallLayerCheck)
+                new CircleLayerCheckModel(view.GroundLayerCheck)
             );
+
+            view.OnCollisionEnterEvent += _movementModel.SwitchDirection;
             
             updateManager.Register((ITickable)this);
             updateManager.Register((IFixedTickable)this);

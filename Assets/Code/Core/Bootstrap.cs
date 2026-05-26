@@ -11,8 +11,11 @@ namespace Code.Core
 {
     public sealed class Bootstrap : MonoBehaviour
     {
+        public static bool IsInitialized { get; private set; }
+        public static string NextSceneName;
+        
         [Header("Next Scene")]
-        [SerializeField] public string nextSceneName;
+        [SerializeField] private string _nextSceneName;
         
         [Header("Character")]
         [SerializeField] private CharacterView _characterView;
@@ -37,7 +40,9 @@ namespace Code.Core
                 ServiceLocator.Get<InputService>()
                 ); 
             
-            SceneManager.LoadScene(nextSceneName);
+            IsInitialized = true;
+            NextSceneName ??= _nextSceneName;
+            SceneManager.LoadScene(NextSceneName);
         }
 
         private void RegisterServices()

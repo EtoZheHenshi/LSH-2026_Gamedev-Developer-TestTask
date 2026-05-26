@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 1086798948}
   m_Layer: 0
   m_Name: '[Player]'
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2fb12a6ab641a7aff69d7be9270d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Code.Core.Bootstrap
-  nextSceneName: Gameplay
+  _nextSceneName: Gameplay
   _characterView: {fileID: 1086798947}
   _characterGroundedCheckView: {fileID: 581490564}
   _dontDestroyObjects:

@@ -22,5 +22,10 @@ namespace Code.Core.Update
         {
             _updateManager.FixedTick(Time.fixedDeltaTime);
         }
+
+        private void LateUpdate()
+        {
+            _updateManager.LateTick(Time.deltaTime);
+        }
     }
 }

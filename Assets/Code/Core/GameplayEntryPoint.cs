@@ -2,6 +2,7 @@ using System;
 using Code.Core.Services;
 using Code.Core.Update;
 using Code.Gameplay.Enemies.Types.Goomba;
+using Code.Gameplay.General;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,7 +13,9 @@ namespace Code.Core
     {
         [SerializeField] private GoombaView _goombaView;
         [SerializeField] private Transform _playerStartPosition;
-        [SerializeField] private CinemachineCamera _playerCamera;
+        [SerializeField] private Collider2D _characterStopCollider;
+        
+        private CameraLogicModel _cameraLogicModel;
 
         private GameObject _player;
 
@@ -27,7 +30,11 @@ namespace Code.Core
             
             _player = GameObject.FindWithTag("Player");
             _player.transform.position = _playerStartPosition.position;
-            _playerCamera.Target.TrackingTarget = _player.transform;
+            
+            _cameraLogicModel = new CameraLogicModel(_player.transform, _characterStopCollider, Camera.main);
+            
+            ServiceLocator.Get<UpdateManager>().Register(_cameraLogicModel);
+            
             GoombaController goomba = new GoombaController(_goombaView, ServiceLocator.Get<UpdateManager>());
         }
     }

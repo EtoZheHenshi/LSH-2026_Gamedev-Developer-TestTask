@@ -9,10 +9,10 @@ namespace Code.Gameplay.General
         private readonly float _accel;
         private readonly float _gravityModifier;
         private readonly bool _isSpeedPermanent;
-        private readonly CircleLayerCheckModel _groundedCheckModel;
+        private readonly BoxLayerCheckModel _groundedCheckModel;
         private readonly float _gravity = -5f;
 
-        public MovementModel(Rigidbody2D rigidbody, float speed, float gravityModifier, CircleLayerCheckModel groundedCheckModel, 
+        public MovementModel(Rigidbody2D rigidbody, float speed, float gravityModifier, BoxLayerCheckModel groundedCheckModel, 
             bool isSpeedPermanent = true, float accel = 0f)
         {
             _rb = rigidbody;

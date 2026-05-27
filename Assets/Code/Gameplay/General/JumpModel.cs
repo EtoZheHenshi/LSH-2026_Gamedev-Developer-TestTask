@@ -5,7 +5,7 @@ namespace Code.Gameplay.General
     public sealed class JumpModel
     {
         private readonly Rigidbody2D _rb;
-        private readonly CircleLayerCheckModel _groundedCheckModel;
+        private readonly BoxLayerCheckModel _groundedCheckModel;
         private readonly float _jumpForce;
         private readonly int _maxJumps;
         
@@ -13,7 +13,7 @@ namespace Code.Gameplay.General
         private int _jumpCount;
         private bool _isJumping;
 
-        public JumpModel(Rigidbody2D rb, CircleLayerCheckModel groundedCheckModel, float jumpForce,  int maxJumps = 1)
+        public JumpModel(Rigidbody2D rb, BoxLayerCheckModel groundedCheckModel, float jumpForce,  int maxJumps = 1)
         {
             _rb = rb;
             _groundedCheckModel = groundedCheckModel;
@@ -26,11 +26,14 @@ namespace Code.Gameplay.General
             if (!_groundedCheckModel.IsCheckTrue)
             {
                 _isJumping = true;
+                if (_jumpCount == 0)
+                {
+                    _jumpCount++;
+                }
             }
             
             if (_isJumping && _groundedCheckModel.IsCheckTrue)
             {
-                _rb.linearVelocityY = 0f;
                 _isJumping = false;
                 _jumpCount = 0;
             }
@@ -41,6 +44,7 @@ namespace Code.Gameplay.General
             if (_jumpCount < _currentMaxJumps)
             {
                 _jumpCount++;
+                _rb.linearVelocityY = 0f;
                 _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
             }
         }

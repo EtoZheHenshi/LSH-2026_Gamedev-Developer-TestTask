@@ -18,7 +18,7 @@ namespace Code.Gameplay.Enemies.Types.Goomba
                 view.Rigidbody,
                 config.Speed,
                 config.GravityModifier,
-                new CircleLayerCheckModel(view.GroundLayerCheck)
+                new BoxLayerCheckModel(view.GroundLayerCheck)
             );
             
             _deathModel = new DeathModel();

@@ -19,7 +19,7 @@ namespace Code.Core
         
         [Header("Character")]
         [SerializeField] private CharacterView _characterView;
-        [SerializeField] private CircleLayerCheckView _characterGroundedCheckView;
+        [SerializeField] private BoxLayerCheckView _characterGroundedCheckView;
         
         [Header("Don't Destroy Objects")]
         [SerializeField] private GameObject[] _dontDestroyObjects;

@@ -9,7 +9,7 @@ namespace Code.Gameplay.Enemies.Types.Goomba
     {
         [SerializeField] private GoombaConfig _config;
         [SerializeField] private Rigidbody2D _rigidbody;
-        [SerializeField] private CircleLayerCheckView _groundLayerCheck;
+        [SerializeField] private BoxLayerCheckView _groundLayerCheck;
         [SerializeField] private StompableView _stompableView;
         
         public event Action<Collision2D> OnCollisionEnterEvent;
@@ -21,7 +21,7 @@ namespace Code.Gameplay.Enemies.Types.Goomba
         
         public GoombaConfig Config => _config;
         public Rigidbody2D Rigidbody => _rigidbody;
-        public CircleLayerCheckView GroundLayerCheck => _groundLayerCheck;
+        public BoxLayerCheckView GroundLayerCheck => _groundLayerCheck;
 
         private void OnCollisionEnter2D(Collision2D collision)
         {

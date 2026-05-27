@@ -15,15 +15,11 @@ namespace Code.Gameplay.Character
 
         private float _direction;
 
-        public CharacterController(CharacterView characterView, CircleLayerCheckView groundedCheckView,
+        public CharacterController(CharacterView characterView, BoxLayerCheckView groundedCheckView,
             UpdateManager updateManager, InputService inputService)
         {
             //Initialization
-            CircleLayerCheckModel groundedCheckModel = new CircleLayerCheckModel(
-                groundedCheckView.Radius,  
-                groundedCheckView.CheckLayers,
-                groundedCheckView.transform
-            );
+            BoxLayerCheckModel groundedCheckModel = new BoxLayerCheckModel(groundedCheckView);
 
             _movementModel = new MovementModel(
                 characterView.Rigidbody,

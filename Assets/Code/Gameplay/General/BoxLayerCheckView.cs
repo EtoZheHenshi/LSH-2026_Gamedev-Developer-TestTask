@@ -2,18 +2,18 @@ using UnityEngine;
 
 namespace Code.Gameplay.General
 {
-    public sealed class CircleLayerCheckView : MonoBehaviour
+    public sealed class BoxLayerCheckView : MonoBehaviour
     {
-        [SerializeField] private float _radius = 0.1f;
+        [SerializeField] private Vector2 _size;
         [SerializeField] private LayerMask _checkLayers;
         
-        public float Radius => _radius;
+        public Vector2 Size => _size;
         public LayerMask CheckLayers => _checkLayers;
 
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _radius);
+            Gizmos.DrawWireCube(transform.position, _size);
         }
     }
 }

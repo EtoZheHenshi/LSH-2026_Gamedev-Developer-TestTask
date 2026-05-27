@@ -11,7 +11,7 @@ namespace Code.Gameplay.Enemies.Behaviours
         private readonly int _wallLayerID = LayerMask.NameToLayer("Wall");
 
         public PatrolMovementModel(Rigidbody2D rigidbody, float speed, float gravityModifier, 
-            CircleLayerCheckModel groundedCheckModel)
+            BoxLayerCheckModel groundedCheckModel)
         {
             _movementModel = new MovementModel(rigidbody, speed, gravityModifier, groundedCheckModel);
         }
@@ -31,7 +31,6 @@ namespace Code.Gameplay.Enemies.Behaviours
             if (collision.collider.gameObject.layer == _wallLayerID)
             {
                 _direction = -_direction;
-                Debug.Log(_direction);
             }
         }
 

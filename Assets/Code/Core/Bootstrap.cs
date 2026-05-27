@@ -1,3 +1,4 @@
+using Code.Core.Events;
 using Code.Core.Services;
 using Code.Core.Update;
 using Code.Gameplay.Character;
@@ -49,6 +50,7 @@ namespace Code.Core
         {
             ServiceLocator.Register(new UpdateManager());
             ServiceLocator.Register(new InputService());
+            ServiceLocator.Register(new EventBus());
         }
     }
 }

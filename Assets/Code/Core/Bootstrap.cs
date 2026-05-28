@@ -3,6 +3,7 @@ using Code.Core.Services;
 using Code.Core.Update;
 using Code.Gameplay.Character;
 using Code.Gameplay.General;
+using Code.Gameplay.Systems;
 using Code.Infrastructure.Input;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -49,8 +50,15 @@ namespace Code.Core
         private void RegisterServices()
         {
             ServiceLocator.Register(new UpdateManager());
+            
             ServiceLocator.Register(new InputService());
-            ServiceLocator.Register(new EventBus());
+            
+            EventBus eventBus = new EventBus();
+            ServiceLocator.Register(eventBus);
+            
+            ServiceLocator.Register(new CoinSystem(eventBus));
+            
+            ServiceLocator.Register(new ScoreSystem(eventBus));
         }
     }
 }

@@ -1,4 +1,3 @@
-using Code.Core.Events;
 using Code.Gameplay.Systems;
 using TMPro;
 
@@ -27,6 +26,10 @@ namespace Code.UI
             _scoreSystem.OnScoreUpdate += ScoreUpdate;
             _coinSystem.OnCoinCountUpdate += CoinUpdate;
             _timerSystem.OnTimeChange += TimeUpdate;
+            
+            ScoreUpdate();
+            CoinUpdate();
+            TimeUpdate();
         }
 
         private void ScoreUpdate()
@@ -42,6 +45,13 @@ namespace Code.UI
         private void TimeUpdate()
         {
             _timeText.text = ((int)_timerSystem.TimeLeft).ToString();
+        }
+        
+        ~HUDModel()
+        {
+            _scoreSystem.OnScoreUpdate -= ScoreUpdate;
+            _coinSystem.OnCoinCountUpdate -= CoinUpdate;
+            _timerSystem.OnTimeChange -= TimeUpdate;
         }
     }
 }

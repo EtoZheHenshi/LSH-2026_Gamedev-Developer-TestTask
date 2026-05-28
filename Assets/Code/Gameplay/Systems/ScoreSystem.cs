@@ -22,6 +22,11 @@ namespace Code.Gameplay.Systems
             _score += score;
             OnScoreUpdate?.Invoke();
         }
+
+        public void RefreshScore()
+        {
+            _score = 0;
+        }
         
         private void OnCoinCollect(CoinCollectedEvent e)
         {

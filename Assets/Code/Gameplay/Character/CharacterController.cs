@@ -1,4 +1,3 @@
-using System;
 using Code.Core.Update;
 using Code.Gameplay.General;
 using Code.Infrastructure.Input;

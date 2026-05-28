@@ -8,22 +8,28 @@ namespace Code.Gameplay.Systems
     {
         public event Action OnTimeChange;
         
-        private float _time = 300;
+        private readonly float _time = 300;
+        private float _timeLeft;
         private bool _active;
         
-        public float TimeLeft => _time;
+        public float TimeLeft => _timeLeft;
+
+        public TimerSystem()
+        {
+            RefreshTimer();
+        }
 
         public void Tick(float deltaTime)
         {
             if (!_active) return;
             
-            _time -= deltaTime;
+            _timeLeft -= deltaTime;
             OnTimeChange?.Invoke();
         }
         
         public void Remove(float time)
         {
-            _time -= time;
+            _timeLeft -= time;
             OnTimeChange?.Invoke();
         }
         
@@ -35,6 +41,11 @@ namespace Code.Gameplay.Systems
         public void StartTimer()
         {
             _active = true;
+        }
+        
+        public void RefreshTimer()
+        {
+            _timeLeft = _time;
         }
     }
 }

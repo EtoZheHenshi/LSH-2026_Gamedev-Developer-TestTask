@@ -3,7 +3,6 @@ using Code.Core.Update;
 using Code.Gameplay.Systems;
 using Code.Infrastructure.Input;
 using Code.UI;
-using UnityEngine;
 
 namespace Code.Gameplay.General.LevelFinishLogic
 {
@@ -63,7 +62,7 @@ namespace Code.Gameplay.General.LevelFinishLogic
                     HandleScoreCountdown();
                     break;
                 case 2:
-                    HandleFinishScreen();
+                    HandleRestartLevel();
                     break;
             }
         }
@@ -80,7 +79,7 @@ namespace Code.Gameplay.General.LevelFinishLogic
 
         private void HandleScoreCountdown()
         {
-            if (_timer < 0.05f) return;
+            if (_timer < 0.02f) return;
 
             _timer = 0f;
 
@@ -101,6 +100,11 @@ namespace Code.Gameplay.General.LevelFinishLogic
             _uiController.Activate();
             
             _active = false;
+        }
+
+        private void HandleRestartLevel()
+        {
+            RestartLevel.Restart(true);
         }
     }
 }

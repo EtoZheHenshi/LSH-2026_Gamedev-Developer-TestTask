@@ -21,18 +21,23 @@ namespace Code.Gameplay.Systems
             eventBus.Subscribe<CoinCollectedEvent>(e => AddCoin());
         }
 
-        private void AddCoin()
-        {
-            _coinCount++;
-            OnCoinCountUpdate?.Invoke();
-        }
-
         public void InitializeCoins(CoinView[] coins)
         {
             for (int i = 0; i < coins.Length; i++)
             {
                 CoinController.Initialize(coins[i], _eventBus);
             }
+        }
+
+        public void RefreshCoins()
+        {
+            _coinCount = 0;
+        }
+        
+        private void AddCoin()
+        {
+            _coinCount++;
+            OnCoinCountUpdate?.Invoke();
         }
     }
 }

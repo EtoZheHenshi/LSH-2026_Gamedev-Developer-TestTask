@@ -28,6 +28,7 @@ namespace Code.Core
         
         private EventBus _eventBus;
         private TimerSystem _timerSystem;
+        private InputService _inputService;
         
         private void Awake()
         {
@@ -45,8 +46,20 @@ namespace Code.Core
                 ServiceLocator.Get<InputService>()
                 );
             
-            _eventBus.Subscribe<LevelFinishedEvent>(e => character.StopCharacter());
-            _eventBus.Subscribe<LevelFinishedEvent>(e => _timerSystem.StopTimer());
+            _eventBus.Subscribe<LevelStartEvent>(e =>
+            {
+                character.UnstopCharacter();
+                _inputService.CurrentMap.Enable();
+                _timerSystem.StartTimer();
+            });
+            
+            _eventBus.Subscribe<LevelFinishedEvent>(e =>
+            {
+                character.StopCharacter();
+                _inputService.CurrentMap.Disable();
+                _timerSystem.StopTimer();
+            });
+            
             ServiceLocator.Get<UpdateManager>().Register(_timerSystem);
             
             IsInitialized = true;
@@ -58,7 +71,8 @@ namespace Code.Core
         {
             ServiceLocator.Register(new UpdateManager());
             
-            ServiceLocator.Register(new InputService());
+            _inputService = new InputService();
+            ServiceLocator.Register(_inputService);
             
             _eventBus = new EventBus();
             ServiceLocator.Register(_eventBus);

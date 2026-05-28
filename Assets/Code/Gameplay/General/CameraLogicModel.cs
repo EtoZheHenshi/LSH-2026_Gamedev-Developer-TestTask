@@ -1,6 +1,4 @@
-using System;
 using Code.Core.Update;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Code.Gameplay.General

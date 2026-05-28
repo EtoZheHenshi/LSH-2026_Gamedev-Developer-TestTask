@@ -1,6 +1,8 @@
+using Code.Core.Services;
 using Code.Core.Update;
 using Code.Gameplay.Enemies.Behaviours;
 using Code.Gameplay.General;
+using Code.Gameplay.Systems;
 
 namespace Code.Gameplay.Enemies.Types.Goomba
 {
@@ -26,13 +28,15 @@ namespace Code.Gameplay.Enemies.Types.Goomba
             //Subscribing
             Sub();
             
-            _deathModel.OnDie += UnSub;
+            _deathModel.OnDie += view.Destroy;
+            view.OnDestroyEvent += UnSub;
             
             return;
 
             void Sub()
             {
                 view.OnCollisionEnterEvent += _movementModel.SwitchDirection;
+                view.OnStomp += AddScore;
                 view.OnStomp += _deathModel.Die;
             
                 updateManager.Register((ITickable)this);
@@ -44,10 +48,10 @@ namespace Code.Gameplay.Enemies.Types.Goomba
                 updateManager.Remove((ITickable)this);
                 updateManager.Remove((IFixedTickable)this);
                 
+                
+                view.OnStomp -= AddScore;
                 view.OnStomp -= _deathModel.Die;
                 view.OnCollisionEnterEvent -= _movementModel.SwitchDirection;
-                
-                view.Destroy();
             }
         }
 
@@ -59,6 +63,11 @@ namespace Code.Gameplay.Enemies.Types.Goomba
         public void FixedTick(float fixedDeltaTime)
         {
             _movementModel.FixedTick(fixedDeltaTime);
+        }
+
+        private void AddScore()
+        {
+            ServiceLocator.Get<ScoreSystem>().Add(200);
         }
     }
 }

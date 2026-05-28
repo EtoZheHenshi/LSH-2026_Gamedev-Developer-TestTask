@@ -18,6 +18,7 @@ namespace Code.Gameplay.Enemies.Types.Goomba
             add => _stompableView.OnStomp += value;
             remove => _stompableView.OnStomp -= value;
         }
+        public event Action OnDestroyEvent;
         
         public GoombaConfig Config => _config;
         public Rigidbody2D Rigidbody => _rigidbody;
@@ -31,6 +32,11 @@ namespace Code.Gameplay.Enemies.Types.Goomba
         public void Destroy()
         {
             Destroy(gameObject);
+        }
+
+        private void OnDestroy()
+        {
+            OnDestroyEvent?.Invoke();
         }
     }
 }

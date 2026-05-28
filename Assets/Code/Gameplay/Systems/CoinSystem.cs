@@ -8,10 +8,11 @@ namespace Code.Gameplay.Systems
     public sealed class CoinSystem : IService
     {
         private int _coinCount;
-        private EventBus _eventBus;
+        private readonly EventBus _eventBus;
 
         public CoinSystem(EventBus eventBus)
         {
+            _eventBus = eventBus;
             eventBus.Subscribe<CoinCollectedEvent>(e => AddCoin());
         }
 

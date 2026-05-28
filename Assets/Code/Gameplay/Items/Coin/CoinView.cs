@@ -7,7 +7,7 @@ namespace Code.Gameplay.Items.Coin
     {
         public event Action OnCollect;
         
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             OnCollect?.Invoke();
             Destroy(gameObject);

@@ -26,6 +26,9 @@ namespace Code.Core
         [Header("Don't Destroy Objects")]
         [SerializeField] private GameObject[] _dontDestroyObjects;
         
+        private EventBus _eventBus;
+        private TimerSystem _timerSystem;
+        
         private void Awake()
         {
             RegisterServices();
@@ -40,7 +43,10 @@ namespace Code.Core
                 _characterGroundedCheckView, 
                 ServiceLocator.Get<UpdateManager>(),
                 ServiceLocator.Get<InputService>()
-                ); 
+                );
+            
+            _eventBus.Subscribe<LevelFinishedEvent>(e => character.StopCharacter());
+            ServiceLocator.Get<UpdateManager>().Register(_timerSystem);
             
             IsInitialized = true;
             NextSceneName ??= _nextSceneName;
@@ -53,12 +59,15 @@ namespace Code.Core
             
             ServiceLocator.Register(new InputService());
             
-            EventBus eventBus = new EventBus();
-            ServiceLocator.Register(eventBus);
+            _eventBus = new EventBus();
+            ServiceLocator.Register(_eventBus);
             
-            ServiceLocator.Register(new CoinSystem(eventBus));
+            ServiceLocator.Register(new CoinSystem(_eventBus));
             
-            ServiceLocator.Register(new ScoreSystem(eventBus));
+            ServiceLocator.Register(new ScoreSystem(_eventBus));
+            
+            _timerSystem = new TimerSystem();
+            ServiceLocator.Register(_timerSystem);
         }
     }
 }

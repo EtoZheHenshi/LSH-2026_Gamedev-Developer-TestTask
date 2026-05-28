@@ -9,16 +9,22 @@ namespace Code.Gameplay.Character
 {
     public sealed class CharacterController : ITickable, IFixedTickable
     {
+        private readonly CharacterView _characterView;
+        
         private readonly MovementModel _movementModel;
         private readonly JumpModel _jumpModel;
         private readonly CharacterStompModel _stompModel;
 
         private float _direction;
+        
+        private bool _moveable;
 
         public CharacterController(CharacterView characterView, BoxLayerCheckView groundedCheckView,
             UpdateManager updateManager, InputService inputService)
         {
             //Initialization
+            _characterView = characterView;
+            
             BoxLayerCheckModel groundedCheckModel = new BoxLayerCheckModel(groundedCheckView);
 
             _movementModel = new MovementModel(
@@ -45,17 +51,34 @@ namespace Code.Gameplay.Character
             updateManager.Register((ITickable)this);
             updateManager.Register((IFixedTickable)this);
             SetInputActions(inputService);
+            
+            _moveable = true;
         }
 
         public void Tick(float deltaTime)
         {
+            if (!_moveable) return;
+            
             _jumpModel.Tick();
         }
 
         public void FixedTick(float fixedDeltaTime)
         {
+            if (!_moveable) return;
+            
             _movementModel.Tick(fixedDeltaTime);
             _movementModel.MoveHorizontal(fixedDeltaTime, _direction);
+        }
+
+        public void StopCharacter()
+        {
+            _moveable = false;
+            _characterView.Rigidbody.linearVelocity = Vector3.zero;
+        }
+
+        public void UnstopCharacter()
+        {
+            _moveable = true;
         }
 
         private void SetInputActions(InputService inputService)

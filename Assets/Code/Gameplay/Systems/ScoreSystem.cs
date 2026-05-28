@@ -12,6 +12,11 @@ namespace Code.Gameplay.Systems
             eventBus.Subscribe<CoinCollectedEvent>(OnCoinCollect);
         }
 
+        public void Add(int score)
+        {
+            _score += score;
+        }
+        
         private void OnCoinCollect(CoinCollectedEvent e)
         {
             _score += 100;

@@ -1,12 +1,17 @@
 using System;
+using Code.Core.Events;
 using Code.Core.Services;
 using Code.Core.Update;
 using Code.Gameplay.Enemies.Types.Goomba;
 using Code.Gameplay.General;
+using Code.Gameplay.General.LevelFinishLogic;
 using Code.Gameplay.Items.Coin;
 using Code.Gameplay.Systems;
+using Code.Infrastructure.Input;
+using Code.UI;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace Code.Core
@@ -17,6 +22,7 @@ namespace Code.Core
         [SerializeField] private Transform _playerStartPosition;
         [SerializeField] private Collider2D _characterStopCollider;
         [SerializeField] private CoinView[] _coinsOnLevel;
+        [SerializeField] private FinishFlagView _finishFlagView;
         
         private CameraLogicModel _cameraLogicModel;
 
@@ -35,10 +41,26 @@ namespace Code.Core
             _player.transform.position = _playerStartPosition.position;
             
             _cameraLogicModel = new CameraLogicModel(_player.transform, _characterStopCollider, Camera.main);
-            
-            ServiceLocator.Get<UpdateManager>().Register(_cameraLogicModel);
+
+            LevelFinishSequence finishSequence = new LevelFinishSequence(
+                ServiceLocator.Get<InputService>(),
+                new CharacterFinishLevelMovement(
+                    _player.transform,
+                    _finishFlagView.transform,
+                    _finishFlagView.CouchTransform,
+                    _finishFlagView.CharacterSprite
+                ),
+                ServiceLocator.Get<EventBus>(),
+                ServiceLocator.Get<TimerSystem>(),
+                ServiceLocator.Get<ScoreSystem>(),
+                new UIController()
+            );
+            _finishFlagView.OnCharacterEntered += finishSequence.StartSequence;
             
             ServiceLocator.Get<CoinSystem>().InitializeCoins(_coinsOnLevel);
+            
+            ServiceLocator.Get<UpdateManager>().Register(_cameraLogicModel);
+            ServiceLocator.Get<UpdateManager>().Register(finishSequence);
             
             GoombaController goomba = new GoombaController(_goombaView, ServiceLocator.Get<UpdateManager>());
         }

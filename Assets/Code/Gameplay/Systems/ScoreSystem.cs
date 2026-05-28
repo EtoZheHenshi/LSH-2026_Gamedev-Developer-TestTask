@@ -1,3 +1,4 @@
+using System;
 using Code.Core.Events;
 using Code.Core.Services;
 
@@ -5,7 +6,11 @@ namespace Code.Gameplay.Systems
 {
     public sealed class ScoreSystem : IService
     {
+        public event Action OnScoreUpdate;
+        
         private int _score;
+        
+        public int Score => _score;
 
         public ScoreSystem(EventBus eventBus)
         {
@@ -15,11 +20,12 @@ namespace Code.Gameplay.Systems
         public void Add(int score)
         {
             _score += score;
+            OnScoreUpdate?.Invoke();
         }
         
         private void OnCoinCollect(CoinCollectedEvent e)
         {
-            _score += 100;
+            Add(100);
         }
     }
 }

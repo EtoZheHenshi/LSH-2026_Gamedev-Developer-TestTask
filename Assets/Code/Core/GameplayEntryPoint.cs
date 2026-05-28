@@ -23,6 +23,7 @@ namespace Code.Core
         [SerializeField] private Collider2D _characterStopCollider;
         [SerializeField] private CoinView[] _coinsOnLevel;
         [SerializeField] private FinishFlagView _finishFlagView;
+        [SerializeField] private HUDView _hudView;
         
         private CameraLogicModel _cameraLogicModel;
 
@@ -41,6 +42,8 @@ namespace Code.Core
             _player.transform.position = _playerStartPosition.position;
             
             _cameraLogicModel = new CameraLogicModel(_player.transform, _characterStopCollider, Camera.main);
+            
+            UIController uiController = new UIController(_hudView);
 
             LevelFinishSequence finishSequence = new LevelFinishSequence(
                 ServiceLocator.Get<InputService>(),
@@ -53,7 +56,7 @@ namespace Code.Core
                 ServiceLocator.Get<EventBus>(),
                 ServiceLocator.Get<TimerSystem>(),
                 ServiceLocator.Get<ScoreSystem>(),
-                new UIController()
+                uiController
             );
             _finishFlagView.OnCharacterEntered += finishSequence.StartSequence;
             
@@ -63,6 +66,8 @@ namespace Code.Core
             ServiceLocator.Get<UpdateManager>().Register(finishSequence);
             
             GoombaController goomba = new GoombaController(_goombaView, ServiceLocator.Get<UpdateManager>());
+            
+            ServiceLocator.Get<TimerSystem>().StartTimer();
         }
     }
 }

@@ -9,8 +9,11 @@ namespace Code.Gameplay.Items.Coin
         
         private void OnTriggerEnter2D(Collider2D other)
         {
-            OnCollect?.Invoke();
-            Destroy(gameObject);
+            if (other.CompareTag("Player"))
+            {
+                OnCollect?.Invoke();
+                Destroy(gameObject);
+            }
         }
     }
 }

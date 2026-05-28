@@ -46,6 +46,7 @@ namespace Code.Core
                 );
             
             _eventBus.Subscribe<LevelFinishedEvent>(e => character.StopCharacter());
+            _eventBus.Subscribe<LevelFinishedEvent>(e => _timerSystem.StopTimer());
             ServiceLocator.Get<UpdateManager>().Register(_timerSystem);
             
             IsInitialized = true;

@@ -1,3 +1,4 @@
+using System;
 using Code.Core.Events;
 using Code.Core.Services;
 using Code.Gameplay.Items.Coin;
@@ -7,8 +8,12 @@ namespace Code.Gameplay.Systems
 {
     public sealed class CoinSystem : IService
     {
+        public event Action OnCoinCountUpdate;
+        
         private int _coinCount;
         private readonly EventBus _eventBus;
+        
+        public int CoinCount => _coinCount;
 
         public CoinSystem(EventBus eventBus)
         {
@@ -19,7 +24,7 @@ namespace Code.Gameplay.Systems
         private void AddCoin()
         {
             _coinCount++;
-            Debug.Log("Coin: " + _coinCount);
+            OnCoinCountUpdate?.Invoke();
         }
 
         public void InitializeCoins(CoinView[] coins)
